@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Coffe&Wifi</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
+		<link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/coffe_icon.ico') }}"
+    />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon fa-gem"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>Coffe Break ! </h1>
+								<p>
+									Bienvenido al sitio web de Coffe Break !</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#view">Consultar</a></li>
+								<!-- <li><a href="#work">Work</a></li> -->
+								<!-- <li><a href="#about">About</a></li> -->
+								<li><a href="#add">Agregar</a></li>
+								<!--<li><a href="#elements">Elements</a></li>-->
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Intro -->
+						<h2 class="major">Visualizar Cafeterias</h2>
+
+						<article id="view">
+							{% for cafe in cafes %}
+							<div class="cafe-card">
+								<span class="image main">
+									<img src="{{ cafe.img_url }}" class="img-card" alt="Image of {{ cafe.name }}" />
+								</span>
+								<h3>{{ cafe.name }}</h3>
+								<div class="detailts">
+									<p class="text">Ubicación: {{ cafe.location }}</p>
+									<p class="text">Asientos: {{ cafe.seats }}</p>
+									<p class="text">Baño: {{ 'Habilitado' if cafe.has_toilet else 'No' }}</p>
+									<p class="text">Wi-Fi: {{ 'Habilitado' if cafe.has_wifi else 'No' }}</p>
+									<p class="text">Enchufes: {{ 'Habilitado' if cafe.has_sockets else 'No' }}</p>
+									<p class="text">Llamadas: {{ 'Habilitado' if cafe.can_take_calls else 'No' }}</p>
+									<p class="text">Coffee Price: {{ cafe.coffe_price }}</p>
+								</div>
+								<a  href="{{ cafe.map_url }}" target="_blank"><img src="{{ url_for('static', filename='images/icono-mapa.png') }}" class="btn-delete" alt="Image of {{ cafe.name }}" /></a>
+								
+								<!-- Enlace para eliminar el café -->
+								<a href="{{ url_for('delete_coffee', cafe_id=cafe.id) }}" class="delete-link">								
+									<img src="{{ url_for('static', filename='images/delete.png') }}" class="btn-delete" alt="Image of {{ cafe.name }}" />
+								</a>
+							</div>
+							{% endfor %}
+						</article>
+
+						<!-- Work -->
+							<!-- <article id="work">
+								<h2 class="major">Work</h2>
+								<span class="image main"><img src="{{ url_for('static', filename='images/pic02.jpg') }}" alt="" /></span>
+								<p>Adipiscing magna sed dolor elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices.</p>
+								<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet feugiat tempus.</p>
+							</article> -->
+
+						<!-- About -->
+							<!-- <article id="about">
+								<h2 class="major">About</h2>
+								<span class="image main"><img src="{{ url_for('static', filename='images/pic03.jpg') }}" alt="" /></span>
+								<p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit amet.</p>
+							</article>  -->
+
+						<!-- Contact -->
+						<article id="add">
+							<h2 class="major">Agregar Cafeteria</h2>
+							<form method="post" action="{{ url_for('add_coffe') }}">
+								<div class="fields">
+									<div class="field half">
+										<label for="name">Nombre</label>
+										<input type="text" name="name" id="name" required />
+									</div>
+									<div class="field half">
+										<label for="map_url">Map URL</label>
+										<input type="text" name="map_url" id="map_url" required />
+									</div>
+									<div class="field half">
+										<label for="img_url">Imagen URL</label>
+										<input type="text" name="img_url" id="img_url" required />
+									</div>
+									<div class="field half">
+										<label for="location">Ubicación</label>
+										<input type="text" name="location" id="location" required />
+									</div>
+									<div class="field half">
+										<label for="seats">Asiento</label>
+										<input type="text" name="seats" id="seats" required />
+									</div>
+									<div class="field half">
+										<label for="has_toilet">¿Cuenta con Baños?</label>
+										<select name="has_toilet" id="has_toilet" required>
+											<option value="true">Si</option>
+											<option value="false">No</option>
+										</select>
+									</div>
+									<div class="field half">
+										<label for="has_wifi">¿Cuenta con Wi-Fi?</label>
+										<select name="has_wifi" id="has_wifi" required>
+											<option value="true">Si</option>
+											<option value="false">No</option>
+										</select>
+									</div>
+									<div class="field half">
+										<label for="has_sockets">¿Cuenta con enchufes?</label>
+										<select name="has_sockets" id="has_sockets" required>
+											<option value="true">Yes</option>
+											<option value="false">No</option>
+										</select>
+									</div>
+									<div class="field half">
+										<label for="can_take_calls">¿Se pueden  hacer Llamadas?</label>
+										<select name="can_take_calls" id="can_take_calls" required>
+											<option value="true">Yes</option>
+											<option value="false">No</option>
+										</select>
+									</div>
+									<div class="field half">
+										<label for="coffee_price">Precio del Cafe</label>
+										<input type="text" name="coffee_price" id="coffee_price" required />
+									</div>
+								</div>
+								<ul class="actions">
+									<li><button type="submit" value="Agregar Cafe" class="button" >Agregar Cafe</button></li>
+									<li><input type="reset" value="Reset" /></li>
+								</ul>
+							</form>
+						</article>
+						
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Ricardo Torres</p>
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+	</body>
+</html>
